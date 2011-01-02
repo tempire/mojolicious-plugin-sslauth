@@ -16,9 +16,13 @@ sub register {
             my $self     = shift;
             my $callback = shift;
 
-            warn Dumper $self->tx->connection;
+            my $id = $self->tx->connection;
+            my $handle = $self->client->async->ioloop->handle($id);
 
-            return $callback->();
+            # Not SSL connection
+            return if ref $handle ne 'IO::Socket::SSL';
+
+            return $callback->($handle);
         }
     );
 }
@@ -52,9 +56,9 @@ L<Mojolicous::Plugin::SslAuth> is a helper for authenticating client ssl certifi
 
     app->start;
 
-L<IO::Socket::SSL> connection passed as first parameter to subroutine reference.
+L<IO::Socket::SSL> connection passed as parameter.
 
-See L<IO::Socket::SSL> for available methods (->peer_certificate is but one)
+See L<IO::Socket::SSL> for available methods. (You're most likely looking for ->peer_certificate & ->get_cipher)
 
 =head1 METHODS
 
