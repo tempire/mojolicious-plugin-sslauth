@@ -24,9 +24,9 @@ L<Mojolicous::Plugin::SslAuth> is a helper for authenticating client ssl certifi
 
     app->start;
 
-L<IO::Socket::SSL> connection passed as first parameter to subroutine reference.
+L<IO::Socket::SSL> connection passed as parameter.
 
-See L<IO::Socket::SSL> for available methods (->peer_certificate is but one)
+See L<IO::Socket::SSL> for available methods. (You're most likely looking for ->peer_certificate & ->get_cipher)
 
 =head1 METHODS
 
