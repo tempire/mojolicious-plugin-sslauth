@@ -13,5 +13,5 @@ meta-spec:
   version: 1.4
 name: Mojolicious-Plugin-SslAuth
 requires:
-  Mojolicious: 1.01
+  Mojolicious: 1.0
 version: 0.01

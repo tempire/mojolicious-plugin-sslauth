@@ -20,7 +20,7 @@ my %WriteMakefileArgs = (
   'LICENSE' => 'perl',
   'NAME' => 'Mojolicious::Plugin::SslAuth',
   'PREREQ_PM' => {
-    'Mojolicious' => '1.01'
+    'Mojolicious' => '1.0'
   },
   'VERSION' => '0.01',
   'test' => {

@@ -1,35 +1,3 @@
-package Mojolicious::Plugin::SslAuth;
-
-use strict;
-use warnings;
-use Data::Dumper;
-
-our $VERSION = '0.01';
-
-use base 'Mojolicious::Plugin';
-
-sub register {
-    my ($plugin, $app) = @_;
-
-    $app->helper(
-        ssl_auth => sub {
-            my $self     = shift;
-            my $callback = shift;
-
-            my $id = $self->tx->connection;
-            my $handle = $self->client->async->ioloop->handle($id);
-
-            # Not SSL connection
-            return if ref $handle ne 'IO::Socket::SSL';
-
-            return $callback->($handle);
-        }
-    );
-}
-
-1;
-__END__
-
 =head1 NAME
 
 Mojolicious::Plugin::SslAuth - SSL client certificate auth helper
@@ -58,7 +26,7 @@ L<Mojolicous::Plugin::SslAuth> is a helper for authenticating client ssl certifi
 
 L<IO::Socket::SSL> connection passed as parameter.
 
-See L<IO::Socket::SSL> for available methods. (You're most likely looking for ->peer_certificate and/or ->get_cipher)
+See L<IO::Socket::SSL> for available methods. (You're most likely looking for ->peer_certificate & ->get_cipher)
 
 =head1 METHODS
 
