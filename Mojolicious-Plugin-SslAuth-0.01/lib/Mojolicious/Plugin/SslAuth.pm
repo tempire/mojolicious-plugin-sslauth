@@ -2,7 +2,6 @@ package Mojolicious::Plugin::SslAuth;
 
 use strict;
 use warnings;
-use Data::Dumper;
 
 our $VERSION = '0.01';
 
