@@ -47,10 +47,11 @@ L<Mojolicous::Plugin::SslAuth> is a helper for authenticating client ssl certifi
         my $self = shift;
 
         return $self->render_text('ok')
-          if $self->ssl_auth( sub {
-                return 1
-                  if shift->peer_certificate('commonName') eq 'client';
-          } );
+          if $self->ssl_auth(
+            sub {
+                return 1 if shift->peer_certificate('commonName') eq 'client';
+            }
+          );
     };
 
     app->start;
