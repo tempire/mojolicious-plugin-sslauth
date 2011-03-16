@@ -50,7 +50,7 @@ L<http://github.com/tempire/mojolicious-plugin-sslauth>
 
 =head1 VERSION
 
-0.01
+0.03
 
 =head1 AUTHOR
 

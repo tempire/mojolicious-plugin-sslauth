@@ -2,21 +2,22 @@ package Mojolicious::Plugin::SslAuth;
 
 use strict;
 use warnings;
+use Mojo::IOLoop;
 
-our $VERSION = '0.01';
+our $VERSION = '0.03';
 
 use base 'Mojolicious::Plugin';
 
 sub register {
-    my ($plugin, $app) = @_;
+    my ( $plugin, $app ) = @_;
 
     $app->helper(
         ssl_auth => sub {
             my $self     = shift;
             my $callback = shift;
 
-            my $id = $self->tx->connection;
-            my $handle = $self->client->async->ioloop->handle($id);
+            my $id     = $self->tx->connection;
+            my $handle = Mojo::IOLoop->singleton->handle($id);
 
             # Not SSL connection
             return if ref $handle ne 'IO::Socket::SSL';
@@ -81,7 +82,7 @@ L<http://github.com/tempire/mojolicious-plugin-sslauth>
 
 =head1 VERSION
 
-0.01
+0.03
 
 =head1 AUTHOR
 

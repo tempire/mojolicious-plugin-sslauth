@@ -26,14 +26,14 @@ get '/' => sub {
         }
       );
 
-    $self->render(text => '', status => 401);
+    $self->render( text => '', status => 401 );
 };
 
 my $loop   = Mojo::IOLoop->singleton;
-my $server = Mojo::Server::Daemon->new(app => app, ioloop => $loop);
+my $server = Mojo::Server::Daemon->new( app => app, ioloop => $loop );
 my $port   = Mojo::IOLoop->generate_port;
-$server->listen(
-    [       "https://localhost:$port"
+$server->listen( [
+            "https://localhost:$port"
           . ':t/certs/server.crt'
           . ':t/certs/server.key'
           . ':t/certs/ca.crt'
@@ -42,17 +42,17 @@ $server->listen(
 $server->prepare_ioloop;
 
 # Success - expected common name
-my $client = Mojo::Client->new(
+my $ua = Mojo::UserAgent->new(
     ioloop => $loop,
     cert   => 't/certs/client.crt',
     key    => 't/certs/client.key'
 );
-my $t = Test::Mojo->new(app => app, client => $client);
+my $t = Test::Mojo->new( app => app, ua => $ua );
 $t->get_ok("https://localhost:$port")->status_is(200)->content_is('ok');
 
 # Fail - different common name
-$t->client(
-    Mojo::Client->new(
+$t->ua(
+    Mojo::UserAgent->new(
         ioloop => $loop,
         cert   => 't/certs/anotherclient.crt',
         key    => 't/certs/anotherclient.key'
