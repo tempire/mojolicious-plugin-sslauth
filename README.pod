@@ -29,6 +29,8 @@ L<IO::Socket::SSL> connection passed as parameter.
 
 See L<IO::Socket::SSL> for available methods. (You're most likely looking for ->peer_certificate and/or ->get_cipher)
 
+B<NOTE> For Mojolicious versions < 1.13, use Mojolicious::Plugin::SslAuth 0.02
+
 =head1 METHODS
 
 L<Mojolicious::Plugin::SslAuth> inherits all methods from
