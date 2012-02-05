@@ -17,7 +17,7 @@ sub register {
             my $callback = shift;
 
             my $id     = $self->tx->connection;
-            my $handle = Mojo::IOLoop->singleton->handle($id);
+            my $handle = Mojo::IOLoop->singleton->stream($id)->handle;
 
             # Not SSL connection
             return if ref $handle ne 'IO::Socket::SSL';
