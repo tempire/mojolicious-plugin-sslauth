@@ -4,27 +4,27 @@ use strict;
 use warnings;
 use Mojo::IOLoop;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use base 'Mojolicious::Plugin';
 
 sub register {
-    my ( $plugin, $app ) = @_;
+  my ($plugin, $app) = @_;
 
-    $app->helper(
-        ssl_auth => sub {
-            my $self     = shift;
-            my $callback = shift;
+  $app->helper(
+    ssl_auth => sub {
+      my $self     = shift;
+      my $callback = shift;
 
-            my $id     = $self->tx->connection;
-            my $handle = Mojo::IOLoop->singleton->handle($id);
+      my $id     = $self->tx->connection;
+      my $handle = Mojo::IOLoop->stream($id)->handle;
 
-            # Not SSL connection
-            return if ref $handle ne 'IO::Socket::SSL';
+      # Not SSL connection
+      return if ref $handle ne 'IO::Socket::SSL';
 
-            return $callback->($handle);
-        }
-    );
+      return $callback->($handle);
+    }
+  );
 }
 
 1;
@@ -38,6 +38,10 @@ Mojolicious::Plugin::SslAuth - SSL client certificate auth helper
 
 L<Mojolicous::Plugin::SslAuth> is a helper for authenticating client ssl certificates against CA's (certificate authorities)
 
+=head2 If using Mojolicious versions before 2.81
+
+L<0.05|http://backpan.perl.org/authors/id/T/TE/TEMPIRE/Mojolicious-Plugin-SslAuth-0.05.tar.gz>
+
 =head1 USAGE
 
     use Mojolicious::Lite;
@@ -49,10 +53,9 @@ L<Mojolicous::Plugin::SslAuth> is a helper for authenticating client ssl certifi
 
         return $self->render_text('ok')
           if $self->ssl_auth(
-            sub {
-                return 1 if shift->peer_certificate('commonName') eq 'client';
-            }
-          );
+          {return 1 if shift->peer_certificate('commonName') eq 'client'});
+
+        $self->render_text('commonName not matched');
     };
 
     app->start;
@@ -82,7 +85,7 @@ L<http://github.com/tempire/mojolicious-plugin-sslauth>
 
 =head1 VERSION
 
-0.05
+0.06
 
 =head1 AUTHOR
 

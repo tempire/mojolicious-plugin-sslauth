@@ -1,3 +1,5 @@
+#use IO::Socket::SSL 'debug4';
+use IO::Socket::SSL;
 use Mojo::IOLoop;
 use Test::More;
 use Test::Mojo;
@@ -5,8 +7,6 @@ use Test::Mojo;
 # Make sure sockets are working
 plan skip_all => 'working sockets required for this test!'
   unless Mojo::IOLoop->new->generate_port;    # Test server
-
-plan tests => 6;
 
 # Lite app
 use Mojolicious::Lite;
@@ -17,45 +17,44 @@ app->log->level('error');
 plugin 'ssl_auth';
 
 get '/' => sub {
-    my $self = shift;
+  my $self = shift;
 
-    return $self->render_text('ok')
-      if $self->ssl_auth(
-        sub {
-            return 1 if shift->peer_certificate('cn') eq 'client';
-        }
-      );
+  return $self->render(text => 'ok')
+    if $self->ssl_auth(
+    sub { return 1 if shift->peer_certificate('cn') eq 'client' });
 
-    $self->render( text => '', status => 401 );
+  $self->render(text => '', status => 401);
 };
 
-my $loop   = Mojo::IOLoop->singleton;
-my $server = Mojo::Server::Daemon->new( app => app, ioloop => $loop );
+my $ioloop = Mojo::IOLoop->singleton;
+my $daemon = Mojo::Server::Daemon->new(app => app, ioloop => $ioloop);
 my $port   = Mojo::IOLoop->generate_port;
-$server->listen( [
-            "https://localhost:$port"
-          . ':t/certs/server.crt'
-          . ':t/certs/server.key'
-          . ':t/certs/ca.crt'
-    ]
-);
-$server->prepare_ioloop;
+$daemon->listen(
+  [     "https://127.0.0.1:$port"
+      . '?cert=t/certs/server.crt'
+      . '&key=t/certs/server.key'
+      . '&ca=t/certs/ca.crt'
+  ]
+)->start;
 
 # Success - expected common name
 my $ua = Mojo::UserAgent->new(
-    ioloop => $loop,
-    cert   => 't/certs/client.crt',
-    key    => 't/certs/client.key'
+  ioloop => $ioloop,
+  cert   => 't/certs/client.crt',
+  key    => 't/certs/client.key'
 );
-my $t = Test::Mojo->new( app => app, ua => $ua );
-$t->get_ok("https://localhost:$port")->status_is(200)->content_is('ok');
+my $t = Test::Mojo->new;
+$t->ua($ua);
+$t->get_ok("https://127.0.0.1:$port")->status_is(200)->content_is('ok');
 
 # Fail - different common name
 $t->ua(
-    Mojo::UserAgent->new(
-        ioloop => $loop,
-        cert   => 't/certs/anotherclient.crt',
-        key    => 't/certs/anotherclient.key'
-    )
+  Mojo::UserAgent->new(
+    ioloop => $ioloop,
+    cert   => 't/certs/anotherclient.crt',
+    key    => 't/certs/anotherclient.key'
+  )
 );
-$t->get_ok("https://localhost:$port")->status_is(401)->content_is('');
+$t->get_ok("https://127.0.0.1:$port")->status_is(401)->content_is('');
+
+done_testing;
