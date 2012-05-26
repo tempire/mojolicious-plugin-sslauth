@@ -27,13 +27,13 @@ L<IO::Socket::SSL> connection passed as parameter.
 
 See L<IO::Socket::SSL> for available methods. (You're most likely looking for ->peer_certificate and/or ->get_cipher)
 
-B<NOTE>
-
 =over
 
-=item For Mojolicious versions < 2.81, use Mojolicious::Plugin::SslAuth 0.05
+=item Older versions of Mojolicious
 
-=item For Mojolicious versions < 1.13, use Mojolicious::Plugin::SslAuth 0.02
+For Mojolicious versions < 2.81, use Mojolicious::Plugin::SslAuth 0.05
+
+For Mojolicious versions < 1.13, use Mojolicious::Plugin::SslAuth 0.02
 
 =back
 
