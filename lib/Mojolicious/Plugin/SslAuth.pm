@@ -38,10 +38,6 @@ Mojolicious::Plugin::SslAuth - SSL client certificate auth helper
 
 L<Mojolicous::Plugin::SslAuth> is a helper for authenticating client ssl certificates against CA's (certificate authorities)
 
-=head2 If using Mojolicious versions before 2.81
-
-L<0.05|http://backpan.perl.org/authors/id/T/TE/TEMPIRE/Mojolicious-Plugin-SslAuth-0.05.tar.gz>
-
 =head1 USAGE
 
     use Mojolicious::Lite;
@@ -49,13 +45,14 @@ L<0.05|http://backpan.perl.org/authors/id/T/TE/TEMPIRE/Mojolicious-Plugin-SslAut
     plugin 'ssl_auth';
 
     get '/' => sub {
-        my $self = shift;
+      my $self = shift;
 
-        return $self->render_text('ok')
-          if $self->ssl_auth(
-          {return 1 if shift->peer_certificate('commonName') eq 'client'});
+      return $self->render_text('ok')
+        if $self->ssl_auth(
+          {return 1 if shift->peer_certificate('commonName') eq 'client'}
+        );
 
-        $self->render_text('commonName not matched');
+      $self->render_text('commonName not matched');
     };
 
     app->start;
@@ -63,6 +60,16 @@ L<0.05|http://backpan.perl.org/authors/id/T/TE/TEMPIRE/Mojolicious-Plugin-SslAut
 L<IO::Socket::SSL> connection passed as parameter.
 
 See L<IO::Socket::SSL> for available methods. (You're most likely looking for ->peer_certificate and/or ->get_cipher)
+
+B<NOTE>
+
+=over
+
+=item For Mojolicious versions < 2.81, use Mojolicious::Plugin::SslAuth 0.05
+
+=item For Mojolicious versions < 1.13, use Mojolicious::Plugin::SslAuth 0.02
+
+=back
 
 =head1 METHODS
 
