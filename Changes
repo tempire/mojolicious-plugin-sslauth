@@ -1,3 +1,6 @@
+0.07  2012-05-26
+    - POD fix
+
 0.06  2012-05-25
     - Adjusted for recent prepare_ioloop removal Test::Mojo changes
 

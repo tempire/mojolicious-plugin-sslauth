@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Mojo::IOLoop;
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use base 'Mojolicious::Plugin';
 
@@ -92,7 +92,7 @@ L<http://github.com/tempire/mojolicious-plugin-sslauth>
 
 =head1 VERSION
 
-0.06
+0.07
 
 =head1 AUTHOR
 
