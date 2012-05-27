@@ -36,7 +36,7 @@ Mojolicious::Plugin::SslAuth - SSL client certificate auth helper
 
 =head1 DESCRIPTION
 
-L<Mojolicous::Plugin::SslAuth> is a helper for authenticating client ssl certificates against CA's (certificate authorities)
+L<Mojolicious::Plugin::SslAuth> is a helper for authenticating client ssl certificates against CA's (certificate authorities)
 
 =head1 USAGE
 
