@@ -6,7 +6,7 @@ use Test::Mojo;
 
 # Make sure sockets are working
 plan skip_all => 'working sockets required for this test!'
-  unless Mojo::IOLoop->new->generate_port;    # Test server
+  unless Mojo::IOLoop->new->server->generate_port;    # Test server
 
 # Lite app
 use Mojolicious::Lite;
