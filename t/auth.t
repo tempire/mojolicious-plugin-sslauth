@@ -6,7 +6,7 @@ use Test::Mojo;
 
 # Make sure sockets are working
 plan skip_all => 'working sockets required for this test!'
-  unless Mojo::IOLoop->new->server->generate_port;    # Test server
+  unless Mojo::IOLoop::Server->generate_port;    # Test server
 
 # Lite app
 use Mojolicious::Lite;
@@ -28,7 +28,7 @@ get '/' => sub {
 
 my $ioloop = Mojo::IOLoop->singleton;
 my $daemon = Mojo::Server::Daemon->new(app => app, ioloop => $ioloop);
-my $port   = Mojo::IOLoop->generate_port;
+my $port   = Mojo::IOLoop::Server->generate_port;
 $daemon->listen(
   [     "https://127.0.0.1:$port"
       . '?cert=t/certs/server.crt'

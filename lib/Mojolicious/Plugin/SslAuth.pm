@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Mojo::IOLoop;
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 use base 'Mojolicious::Plugin';
 
@@ -65,6 +65,8 @@ See L<IO::Socket::SSL> for available methods. (You're most likely looking for ->
 
 =item Older versions of Mojolicious
 
+For Mojolicious versions >= 5.0, use Mojolicious::Plugin::SslAuth 0.08
+
 For Mojolicious versions < 2.81, use Mojolicious::Plugin::SslAuth 0.05
 
 For Mojolicious versions < 1.13, use Mojolicious::Plugin::SslAuth 0.02
@@ -92,10 +94,14 @@ L<http://github.com/tempire/mojolicious-plugin-sslauth>
 
 =head1 VERSION
 
-0.07
+0.08
 
 =head1 AUTHOR
 
 Glen Hinkle tempire@cpan.org
+
+=head1 CONTRIBUTORS
+
+reneeb
 
 =cut
